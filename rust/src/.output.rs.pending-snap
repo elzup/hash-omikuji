@@ -1,0 +1,2 @@
+{"run_id":"1767174192-122301000","line":290,"new":{"module_name":"sha_omikuji__output__tests","snapshot_name":"art_output","metadata":{"source":"src/output.rs","assertion_line":290,"expression":"result.omikuji_art"},"snapshot":"▂▁▂▂▄▅█▅▃▄▃▂▁▁▁▄"},"old":{"module_name":"sha_omikuji__output__tests","metadata":{},"snapshot":"▄▄▃▁▁ ▁▂▃▁▄▄▄▇█▆▂▄▃▄▁▂▁▄▁▂▁▁▄▃▆▃"}}
+{"run_id":"1767174219-334136000","line":290,"new":null,"old":null}
