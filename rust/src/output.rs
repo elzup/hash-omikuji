@@ -1,3 +1,4 @@
+use crate::art::generate_omikuji_art;
 use crate::hash::HashBits;
 use crate::luck::{calculate_luck_scores, LuckScore, LuckType};
 use chrono::NaiveDate;
@@ -17,6 +18,7 @@ pub struct OmikujiResult {
     pub luck_scores: Vec<LuckScore>,
     pub entropy_check: String,
     pub fingerprint: String,
+    pub omikuji_art: String,
 }
 
 impl OmikujiResult {
@@ -49,6 +51,7 @@ impl OmikujiResult {
         let luck_scores = calculate_luck_scores(&scores, flags);
         let entropy_check = format!("0x{:03X}", entropy);
         let fingerprint = hash.hex_string();
+        let omikuji_art = generate_omikuji_art(hash.raw_bytes());
 
         Self {
             year,
@@ -63,6 +66,7 @@ impl OmikujiResult {
             luck_scores,
             entropy_check,
             fingerprint,
+            omikuji_art,
         }
     }
 
@@ -109,6 +113,9 @@ impl OmikujiResult {
         output.push('\n');
 
         output.push_str(&format!("Entropy Check     : OK ({})\n", self.entropy_check));
+
+        output.push_str("\n[ Omikuji Art ]\n");
+        output.push_str(&format!("{}\n", self.omikuji_art));
 
         if show_seed {
             output.push_str(&format!("\nFingerprint       : {}\n", self.fingerprint));

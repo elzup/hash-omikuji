@@ -1,3 +1,4 @@
+mod art;
 mod cli;
 mod hash;
 mod luck;

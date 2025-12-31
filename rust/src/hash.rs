@@ -86,6 +86,11 @@ impl HashBits {
     pub fn entropy_check(&self) -> u16 {
         self.get_bits(244, 12) as u16
     }
+
+    /// Get raw bytes for art generation
+    pub fn raw_bytes(&self) -> &[u8; 32] {
+        &self.bytes
+    }
 }
 
 #[cfg(test)]
