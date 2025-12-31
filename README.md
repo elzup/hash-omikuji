@@ -12,12 +12,11 @@ npx hash-omikuji
 
 ### Options
 
-- `--year <YYYY>` - Target year (default: current year)
+- `--force-year <YYYY>` - Force execution for a specific year (bypasses January 1st restriction)
 - `--seed <string>` - Custom seed (default: device fingerprint from username@hostname)
 - `--json` - Output as JSON
 - `--short` - Show only top 5 luck scores
 - `--show-seed` - Display seed and fingerprint
-- `--force` - Execute outside January 1st (with warning)
 
 ### Example Output
 
