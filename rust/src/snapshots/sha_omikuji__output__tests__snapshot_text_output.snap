@@ -1,0 +1,36 @@
+---
+source: src/output.rs
+expression: text
+---
+🎍 SHA-Omikuji 2026 🎍
+
+Lucky Number      : 95
+Lucky Hex         : 0xE3
+Lucky Color       : #E35F21
+Lucky Bits        : 0110 1101 0100 0111
+
+Lucky Day         : 2026-03-30 (89 / 365)
+Lucky Time        : 00:12
+
+Active Luck Flags :
+✔ Life  ✖ Health  ✔ Wealth  ✔ Career  ✖ Love  ✔ Marriage  ✔ Family  ✔ Friendship  ✔ Study  ✔ Challenge  ✖ Opportunity  ✔ Motivation  ✖ Debug  ✖ WiFi  ✔ Windfall  ✖ Chaos
+
+Luck Scores :
+Marriage Luck     :  93 (Excellent)
+Windfall Luck     :  84 (Good)
+Motivation Luck   :  73 (Good)
+Family Luck       :  70 (Good)
+Study Luck        :  56 (Normal)
+Wealth Luck       :  49 (Normal)
+Challenge Luck    :  22 (Bad)
+Career Luck       :  21 (Bad)
+Life Luck         :   8 (Terrible)
+Friendship Luck   :   2 (Terrible)
+
+Entropy Check     : OK (0xA90)
+
+[ Omikuji Art ]
+SE##############
+
+Seed              : test-user
+Fingerprint       : 5fe36d472c00c87da7026d6634bed15a77e38c0efb40791394dbb9f50d793a90

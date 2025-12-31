@@ -269,4 +269,24 @@ mod tests {
         assert!(json.contains("\"lucky_number\""));
         assert!(json.contains("\"luck_scores\""));
     }
+
+    #[test]
+    fn test_snapshot_text_output() {
+        let result = create_test_result();
+        let text = result.format_text(false, true);
+        insta::assert_snapshot!(text);
+    }
+
+    #[test]
+    fn test_snapshot_json_output() {
+        let result = create_test_result();
+        insta::assert_json_snapshot!(result);
+    }
+
+    #[test]
+    fn test_snapshot_art() {
+        let hash = HashBits::from_seed(2026, "snapshot-test");
+        let result = OmikujiResult::from_hash(&hash, 2026, "snapshot-test");
+        insta::assert_snapshot!("art", result.omikuji_art);
+    }
 }

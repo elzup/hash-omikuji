@@ -49,6 +49,7 @@ SE##############
 ## How It Works
 
 Uses SHA-256 hash of `{year}-{seed}-{salt}` to deterministically generate:
+
 - Lucky numbers, hex, color, bits
 - Lucky day and time
 - 16 luck categories with scores and active flags

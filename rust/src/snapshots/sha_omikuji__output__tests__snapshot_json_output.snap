@@ -1,0 +1,132 @@
+---
+source: src/output.rs
+expression: result
+---
+{
+  "year": 2026,
+  "seed": "test-user",
+  "lucky_number": 95,
+  "lucky_hex": "0xE3",
+  "lucky_color": "#E35F21",
+  "lucky_bits": "0110 1101 0100 0111",
+  "lucky_day": "2026-03-30 (89 / 365)",
+  "lucky_day_number": 89,
+  "lucky_time": "00:12",
+  "luck_scores": [
+    {
+      "luck_type": "Life",
+      "raw_value": 21,
+      "score": 8,
+      "rank": "Terrible",
+      "active": true
+    },
+    {
+      "luck_type": "Health",
+      "raw_value": 167,
+      "score": 65,
+      "rank": "Normal",
+      "active": false
+    },
+    {
+      "luck_type": "Wealth",
+      "raw_value": 126,
+      "score": 49,
+      "rank": "Normal",
+      "active": true
+    },
+    {
+      "luck_type": "Career",
+      "raw_value": 56,
+      "score": 21,
+      "rank": "Bad",
+      "active": true
+    },
+    {
+      "luck_type": "Love",
+      "raw_value": 192,
+      "score": 75,
+      "rank": "Good",
+      "active": false
+    },
+    {
+      "luck_type": "Marriage",
+      "raw_value": 239,
+      "score": 93,
+      "rank": "Excellent",
+      "active": true
+    },
+    {
+      "luck_type": "Family",
+      "raw_value": 180,
+      "score": 70,
+      "rank": "Good",
+      "active": true
+    },
+    {
+      "luck_type": "Friendship",
+      "raw_value": 7,
+      "score": 2,
+      "rank": "Terrible",
+      "active": true
+    },
+    {
+      "luck_type": "Study",
+      "raw_value": 145,
+      "score": 56,
+      "rank": "Normal",
+      "active": true
+    },
+    {
+      "luck_type": "Challenge",
+      "raw_value": 57,
+      "score": 22,
+      "rank": "Bad",
+      "active": true
+    },
+    {
+      "luck_type": "Opportunity",
+      "raw_value": 77,
+      "score": 30,
+      "rank": "Bad",
+      "active": false
+    },
+    {
+      "luck_type": "Motivation",
+      "raw_value": 187,
+      "score": 73,
+      "rank": "Good",
+      "active": true
+    },
+    {
+      "luck_type": "Debug",
+      "raw_value": 159,
+      "score": 62,
+      "rank": "Normal",
+      "active": false
+    },
+    {
+      "luck_type": "WiFi",
+      "raw_value": 80,
+      "score": 31,
+      "rank": "Bad",
+      "active": false
+    },
+    {
+      "luck_type": "Windfall",
+      "raw_value": 215,
+      "score": 84,
+      "rank": "Good",
+      "active": true
+    },
+    {
+      "luck_type": "Chaos",
+      "raw_value": 147,
+      "score": 57,
+      "rank": "Normal",
+      "active": false
+    }
+  ],
+  "entropy_check": "0xA90",
+  "fingerprint": "5fe36d472c00c87da7026d6634bed15a77e38c0efb40791394dbb9f50d793a90",
+  "omikuji_art": "SE##############"
+}

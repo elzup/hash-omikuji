@@ -12,10 +12,10 @@ pub fn generate_omikuji_art(hash_bytes: &[u8; 32]) -> String {
         for shift in (0..8).step_by(2) {
             let bits = (byte >> (6 - shift)) & 0b11;
             let movement: i32 = match bits {
-                0b00 => 0,  // stay
-                0b01 => 1,  // right
-                0b10 => 2,  // right x2
-                0b11 => 3,  // right x3
+                0b00 => 0, // stay
+                0b01 => 1, // right
+                0b10 => 2, // right x2
+                0b11 => 3, // right x3
                 _ => unreachable!(),
             };
 
@@ -56,7 +56,7 @@ pub fn generate_omikuji_art(hash_bytes: &[u8; 32]) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use sha2::{Sha256, Digest};
+    use sha2::{Digest, Sha256};
 
     fn make_hash(seed: &[u8]) -> [u8; 32] {
         let mut hasher = Sha256::new();
@@ -103,7 +103,11 @@ mod tests {
         // All zeros = all "stay" moves, position stays at 0
         let hash = [0u8; 32];
         let art = generate_omikuji_art(&hash);
-        assert!(art.starts_with('X'), "Expected X at start for all-zero hash, got: {}", art);
+        assert!(
+            art.starts_with('X'),
+            "Expected X at start for all-zero hash, got: {}",
+            art
+        );
     }
 
     #[test]
@@ -113,7 +117,8 @@ mod tests {
         for ch in art.chars() {
             assert!(
                 matches!(ch, 'S' | 'E' | 'X' | '.' | '+' | '#'),
-                "Invalid character in art: {}", ch
+                "Invalid character in art: {}",
+                ch
             );
         }
     }
@@ -137,7 +142,8 @@ mod tests {
         let first_char = art.chars().next().unwrap();
         assert!(
             first_char == 'S' || first_char == 'X',
-            "First char should be S or X, got: {}", first_char
+            "First char should be S or X, got: {}",
+            first_char
         );
     }
 }
