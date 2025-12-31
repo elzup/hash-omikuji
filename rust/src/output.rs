@@ -7,7 +7,7 @@ use serde::Serialize;
 #[derive(Debug, Serialize)]
 pub struct OmikujiResult {
     pub year: u32,
-    pub user: String,
+    pub seed: String,
     pub lucky_number: u8,
     pub lucky_hex: String,
     pub lucky_color: String,
@@ -22,7 +22,7 @@ pub struct OmikujiResult {
 }
 
 impl OmikujiResult {
-    pub fn from_hash(hash: &HashBits, year: u32, user: &str) -> Self {
+    pub fn from_hash(hash: &HashBits, year: u32, seed: &str) -> Self {
         let lucky_number = hash.lucky_number();
         let lucky_hex_val = hash.lucky_hex();
         let lucky_bits_val = hash.lucky_bits();
@@ -55,7 +55,7 @@ impl OmikujiResult {
 
         Self {
             year,
-            user: user.to_string(),
+            seed: seed.to_string(),
             lucky_number,
             lucky_hex,
             lucky_color,
@@ -118,7 +118,8 @@ impl OmikujiResult {
         output.push_str(&format!("{}\n", self.omikuji_art));
 
         if show_seed {
-            output.push_str(&format!("\nFingerprint       : {}\n", self.fingerprint));
+            output.push_str(&format!("\nSeed              : {}\n", self.seed));
+            output.push_str(&format!("Fingerprint       : {}\n", self.fingerprint));
         }
 
         output
@@ -126,5 +127,146 @@ impl OmikujiResult {
 
     pub fn format_json(&self) -> String {
         serde_json::to_string_pretty(self).unwrap()
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    fn create_test_result() -> OmikujiResult {
+        let hash = HashBits::from_seed(2026, "test-user");
+        OmikujiResult::from_hash(&hash, 2026, "test-user")
+    }
+
+    #[test]
+    fn test_result_deterministic() {
+        let result1 = create_test_result();
+        let result2 = create_test_result();
+        assert_eq!(result1.fingerprint, result2.fingerprint);
+        assert_eq!(result1.lucky_number, result2.lucky_number);
+    }
+
+    #[test]
+    fn test_result_year() {
+        let result = create_test_result();
+        assert_eq!(result.year, 2026);
+    }
+
+    #[test]
+    fn test_result_seed() {
+        let result = create_test_result();
+        assert_eq!(result.seed, "test-user");
+    }
+
+    #[test]
+    fn test_lucky_hex_format() {
+        let result = create_test_result();
+        assert!(result.lucky_hex.starts_with("0x"));
+        assert_eq!(result.lucky_hex.len(), 4); // "0xXX"
+    }
+
+    #[test]
+    fn test_lucky_color_format() {
+        let result = create_test_result();
+        assert!(result.lucky_color.starts_with('#'));
+        assert_eq!(result.lucky_color.len(), 7); // "#RRGGBB"
+    }
+
+    #[test]
+    fn test_lucky_bits_format() {
+        let result = create_test_result();
+        // Format: "XXXX XXXX XXXX XXXX"
+        assert_eq!(result.lucky_bits.len(), 19);
+        assert!(result.lucky_bits.chars().all(|c| c == '0' || c == '1' || c == ' '));
+    }
+
+    #[test]
+    fn test_lucky_day_contains_year() {
+        let result = create_test_result();
+        assert!(result.lucky_day.contains("2026"));
+    }
+
+    #[test]
+    fn test_lucky_day_number_range() {
+        let result = create_test_result();
+        assert!(result.lucky_day_number >= 1 && result.lucky_day_number <= 365);
+    }
+
+    #[test]
+    fn test_lucky_time_format() {
+        let result = create_test_result();
+        // Format: "HH:MM"
+        assert_eq!(result.lucky_time.len(), 5);
+        assert!(result.lucky_time.contains(':'));
+    }
+
+    #[test]
+    fn test_luck_scores_count() {
+        let result = create_test_result();
+        assert_eq!(result.luck_scores.len(), 16);
+    }
+
+    #[test]
+    fn test_entropy_check_format() {
+        let result = create_test_result();
+        assert!(result.entropy_check.starts_with("0x"));
+    }
+
+    #[test]
+    fn test_fingerprint_length() {
+        let result = create_test_result();
+        assert_eq!(result.fingerprint.len(), 64);
+    }
+
+    #[test]
+    fn test_omikuji_art_length() {
+        let result = create_test_result();
+        assert_eq!(result.omikuji_art.len(), 16);
+    }
+
+    #[test]
+    fn test_format_text_contains_header() {
+        let result = create_test_result();
+        let text = result.format_text(false, false);
+        assert!(text.contains("SHA-Omikuji 2026"));
+    }
+
+    #[test]
+    fn test_format_text_short_mode() {
+        let result = create_test_result();
+        let text_full = result.format_text(false, false);
+        let text_short = result.format_text(true, false);
+        // Short mode should be shorter or equal
+        assert!(text_short.len() <= text_full.len());
+    }
+
+    #[test]
+    fn test_format_text_show_seed() {
+        let result = create_test_result();
+        let text_with_seed = result.format_text(false, true);
+        let text_without_seed = result.format_text(false, false);
+        assert!(text_with_seed.contains("Seed"));
+        assert!(text_with_seed.contains("Fingerprint"));
+        assert!(!text_without_seed.contains("Seed"));
+    }
+
+    #[test]
+    fn test_format_json_valid() {
+        let result = create_test_result();
+        let json = result.format_json();
+        // Should be valid JSON
+        let parsed: serde_json::Value = serde_json::from_str(&json).unwrap();
+        assert!(parsed.is_object());
+    }
+
+    #[test]
+    fn test_format_json_contains_fields() {
+        let result = create_test_result();
+        let json = result.format_json();
+        assert!(json.contains("\"year\""));
+        assert!(json.contains("\"seed\""));
+        assert!(json.contains("\"lucky_number\""));
+        assert!(json.contains("\"luck_scores\""));
     }
 }

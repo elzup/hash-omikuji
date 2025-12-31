@@ -112,10 +112,27 @@ mod tests {
     }
 
     #[test]
+    fn test_different_years_different_hash() {
+        let hash1 = HashBits::from_seed(2025, "alice");
+        let hash2 = HashBits::from_seed(2026, "alice");
+        assert_ne!(hash1.hex_string(), hash2.hex_string());
+    }
+
+    #[test]
     fn test_lucky_day_range() {
         let hash = HashBits::from_seed(2026, "test");
         let day = hash.lucky_day();
         assert!(day >= 1 && day <= 365);
+    }
+
+    #[test]
+    fn test_lucky_day_range_many_seeds() {
+        for i in 0..100 {
+            let seed = format!("test-{}", i);
+            let hash = HashBits::from_seed(2026, &seed);
+            let day = hash.lucky_day();
+            assert!(day >= 1 && day <= 365, "Day out of range: {}", day);
+        }
     }
 
     #[test]
@@ -126,9 +143,73 @@ mod tests {
     }
 
     #[test]
+    fn test_lucky_hour_range_many_seeds() {
+        for i in 0..100 {
+            let seed = format!("test-{}", i);
+            let hash = HashBits::from_seed(2026, &seed);
+            let hour = hash.lucky_hour();
+            assert!(hour < 24, "Hour out of range: {}", hour);
+        }
+    }
+
+    #[test]
     fn test_lucky_minute_range() {
         let hash = HashBits::from_seed(2026, "test");
         let minute = hash.lucky_minute();
         assert!(minute < 60);
+    }
+
+    #[test]
+    fn test_lucky_minute_range_many_seeds() {
+        for i in 0..100 {
+            let seed = format!("test-{}", i);
+            let hash = HashBits::from_seed(2026, &seed);
+            let minute = hash.lucky_minute();
+            assert!(minute < 60, "Minute out of range: {}", minute);
+        }
+    }
+
+    #[test]
+    fn test_lucky_number_range() {
+        let hash = HashBits::from_seed(2026, "test");
+        let num = hash.lucky_number();
+        assert!(num <= 255);
+    }
+
+    #[test]
+    fn test_luck_scores_count() {
+        let hash = HashBits::from_seed(2026, "test");
+        let scores = hash.luck_scores();
+        assert_eq!(scores.len(), 16);
+    }
+
+    #[test]
+    fn test_hex_string_length() {
+        let hash = HashBits::from_seed(2026, "test");
+        let hex = hash.hex_string();
+        assert_eq!(hex.len(), 64); // 32 bytes * 2 hex chars
+    }
+
+    #[test]
+    fn test_hex_string_valid_chars() {
+        let hash = HashBits::from_seed(2026, "test");
+        let hex = hash.hex_string();
+        for ch in hex.chars() {
+            assert!(ch.is_ascii_hexdigit(), "Invalid hex char: {}", ch);
+        }
+    }
+
+    #[test]
+    fn test_entropy_check_range() {
+        let hash = HashBits::from_seed(2026, "test");
+        let entropy = hash.entropy_check();
+        assert!(entropy <= 0xFFF); // 12 bits max
+    }
+
+    #[test]
+    fn test_raw_bytes_length() {
+        let hash = HashBits::from_seed(2026, "test");
+        let bytes = hash.raw_bytes();
+        assert_eq!(bytes.len(), 32);
     }
 }

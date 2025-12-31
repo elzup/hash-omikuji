@@ -1,5 +1,13 @@
 use clap::Parser;
 use chrono::{Datelike, Local};
+use gethostname::gethostname;
+use std::env;
+
+fn get_default_seed() -> String {
+    let hostname = gethostname().to_string_lossy().to_string();
+    let username = env::var("USER").unwrap_or_else(|_| "anonymous".to_string());
+    format!("{}@{}", username, hostname)
+}
 
 #[derive(Parser, Debug)]
 #[command(name = "sha-omikuji")]
@@ -12,9 +20,9 @@ pub struct Args {
     #[arg(long, default_value_t = Local::now().year() as u32)]
     pub year: u32,
 
-    /// User identifier
+    /// Custom seed string (defaults to username@hostname)
     #[arg(long, short)]
-    pub user: String,
+    pub seed: Option<String>,
 
     /// Output as JSON
     #[arg(long, default_value_t = false)]
@@ -24,9 +32,9 @@ pub struct Args {
     #[arg(long, default_value_t = false)]
     pub short: bool,
 
-    /// Show raw seed string
+    /// Show seed and fingerprint in output
     #[arg(long, default_value_t = false)]
-    pub seed: bool,
+    pub show_seed: bool,
 
     /// Force execution even if not January 1st (WARNING will be shown)
     #[arg(long, default_value_t = false)]
@@ -38,6 +46,10 @@ pub struct Args {
 }
 
 impl Args {
+    pub fn get_seed(&self) -> String {
+        self.seed.clone().unwrap_or_else(get_default_seed)
+    }
+
     pub fn is_january_first(&self) -> bool {
         if let Some(ref date_str) = self.date {
             if let Some((_, rest)) = date_str.split_once('-') {
@@ -71,10 +83,10 @@ mod tests {
     fn test_january_first_detection() {
         let args = Args {
             year: 2026,
-            user: "test".to_string(),
+            seed: Some("test".to_string()),
             json: false,
             short: false,
-            seed: false,
+            show_seed: false,
             force: false,
             date: Some("2026-01-01".to_string()),
         };
@@ -82,10 +94,10 @@ mod tests {
 
         let args = Args {
             year: 2026,
-            user: "test".to_string(),
+            seed: Some("test".to_string()),
             json: false,
             short: false,
-            seed: false,
+            show_seed: false,
             force: false,
             date: Some("2026-07-15".to_string()),
         };
@@ -96,10 +108,10 @@ mod tests {
     fn test_can_execute_with_force() {
         let args = Args {
             year: 2026,
-            user: "test".to_string(),
+            seed: Some("test".to_string()),
             json: false,
             short: false,
-            seed: false,
+            show_seed: false,
             force: true,
             date: Some("2026-07-15".to_string()),
         };
@@ -110,13 +122,42 @@ mod tests {
     fn test_cannot_execute_without_force() {
         let args = Args {
             year: 2026,
-            user: "test".to_string(),
+            seed: Some("test".to_string()),
             json: false,
             short: false,
-            seed: false,
+            show_seed: false,
             force: false,
             date: Some("2026-07-15".to_string()),
         };
         assert!(args.can_execute().is_err());
+    }
+
+    #[test]
+    fn test_get_seed_custom() {
+        let args = Args {
+            year: 2026,
+            seed: Some("custom-seed".to_string()),
+            json: false,
+            short: false,
+            show_seed: false,
+            force: false,
+            date: None,
+        };
+        assert_eq!(args.get_seed(), "custom-seed");
+    }
+
+    #[test]
+    fn test_get_seed_default() {
+        let args = Args {
+            year: 2026,
+            seed: None,
+            json: false,
+            short: false,
+            show_seed: false,
+            force: false,
+            date: None,
+        };
+        let seed = args.get_seed();
+        assert!(seed.contains('@'));
     }
 }

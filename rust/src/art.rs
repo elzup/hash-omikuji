@@ -58,6 +58,15 @@ mod tests {
     use super::*;
     use sha2::{Sha256, Digest};
 
+    fn make_hash(seed: &[u8]) -> [u8; 32] {
+        let mut hasher = Sha256::new();
+        hasher.update(seed);
+        let result = hasher.finalize();
+        let mut hash = [0u8; 32];
+        hash.copy_from_slice(&result);
+        hash
+    }
+
     #[test]
     fn test_art_length() {
         let hash = [0u8; 32];
@@ -67,12 +76,7 @@ mod tests {
 
     #[test]
     fn test_art_deterministic() {
-        let mut hasher = Sha256::new();
-        hasher.update(b"test-seed");
-        let result = hasher.finalize();
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(&result);
-
+        let hash = make_hash(b"test-seed");
         let art1 = generate_omikuji_art(&hash);
         let art2 = generate_omikuji_art(&hash);
         assert_eq!(art1, art2);
@@ -80,32 +84,60 @@ mod tests {
 
     #[test]
     fn test_art_has_start_or_end() {
-        let mut hasher = Sha256::new();
-        hasher.update(b"some-user");
-        let result = hasher.finalize();
-        let mut hash = [0u8; 32];
-        hash.copy_from_slice(&result);
-
+        let hash = make_hash(b"some-user");
         let art = generate_omikuji_art(&hash);
         assert!(art.contains('S') || art.contains('E') || art.contains('X'));
     }
 
     #[test]
     fn test_different_hashes_different_art() {
-        let mut hasher1 = Sha256::new();
-        hasher1.update(b"alice");
-        let result1 = hasher1.finalize();
-        let mut hash1 = [0u8; 32];
-        hash1.copy_from_slice(&result1);
-
-        let mut hasher2 = Sha256::new();
-        hasher2.update(b"bob");
-        let result2 = hasher2.finalize();
-        let mut hash2 = [0u8; 32];
-        hash2.copy_from_slice(&result2);
-
+        let hash1 = make_hash(b"alice");
+        let hash2 = make_hash(b"bob");
         let art1 = generate_omikuji_art(&hash1);
         let art2 = generate_omikuji_art(&hash2);
         assert_ne!(art1, art2);
+    }
+
+    #[test]
+    fn test_all_zeros_produces_x() {
+        // All zeros = all "stay" moves, position stays at 0
+        let hash = [0u8; 32];
+        let art = generate_omikuji_art(&hash);
+        assert!(art.starts_with('X'), "Expected X at start for all-zero hash, got: {}", art);
+    }
+
+    #[test]
+    fn test_art_contains_only_valid_chars() {
+        let hash = make_hash(b"random-test-seed");
+        let art = generate_omikuji_art(&hash);
+        for ch in art.chars() {
+            assert!(
+                matches!(ch, 'S' | 'E' | 'X' | '.' | '+' | '#'),
+                "Invalid character in art: {}", ch
+            );
+        }
+    }
+
+    #[test]
+    fn test_art_many_seeds() {
+        // Test with many different seeds to ensure no panics
+        for i in 0..100 {
+            let seed = format!("test-seed-{}", i);
+            let hash = make_hash(seed.as_bytes());
+            let art = generate_omikuji_art(&hash);
+            assert_eq!(art.len(), 16);
+        }
+    }
+
+    #[test]
+    fn test_art_start_position() {
+        // Start position is always 0, so 'S' or 'X' should be at position 0
+        let hash = make_hash(b"check-start");
+        let art = generate_omikuji_art(&hash);
+        let first_char = art.chars().next().unwrap();
+        assert!(
+            first_char == 'S' || first_char == 'X',
+            "First char should be S or X, got: {}", first_char
+        );
     }
 }

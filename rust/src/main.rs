@@ -25,14 +25,17 @@ fn main() {
         eprintln!("WARNING: Running outside January 1st with --force flag.\n");
     }
 
+    // Get seed (default: username@hostname)
+    let seed = args.get_seed();
+
     // Generate hash and result
-    let hash = HashBits::from_seed(args.year, &args.user);
-    let result = OmikujiResult::from_hash(&hash, args.year, &args.user);
+    let hash = HashBits::from_seed(args.year, &seed);
+    let result = OmikujiResult::from_hash(&hash, args.year, &seed);
 
     // Output
     if args.json {
         println!("{}", result.format_json());
     } else {
-        print!("{}", result.format_text(args.short, args.seed));
+        print!("{}", result.format_text(args.short, args.show_seed));
     }
 }
