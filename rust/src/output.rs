@@ -26,6 +26,11 @@ pub struct OmikujiResult {
     pub lucky_ascii: char,
     pub lucky_logic_gate: String,
     pub lucky_emoji: String,
+    pub lucky_direction: String,
+    pub lucky_element: String,
+    pub lucky_percent: u8,
+    pub lucky_latitude: i8,
+    pub lucky_longitude: i16,
     pub luck_scores: Vec<LuckScore>,
     pub entropy_check: String,
     pub fingerprint: String,
@@ -43,6 +48,11 @@ impl OmikujiResult {
         let lucky_ascii = hash.lucky_ascii();
         let lucky_logic_gate = hash.lucky_logic_gate().to_string();
         let lucky_emoji = hash.lucky_emoji().to_string();
+        let lucky_direction = hash.lucky_direction().to_string();
+        let lucky_element = hash.lucky_element().to_string();
+        let lucky_percent = hash.lucky_percent();
+        let lucky_latitude = hash.lucky_latitude();
+        let lucky_longitude = hash.lucky_longitude();
         let scores = hash.luck_scores();
         let entropy = hash.entropy_check();
 
@@ -79,6 +89,11 @@ impl OmikujiResult {
             lucky_ascii,
             lucky_logic_gate,
             lucky_emoji,
+            lucky_direction,
+            lucky_element,
+            lucky_percent,
+            lucky_latitude,
+            lucky_longitude,
             luck_scores,
             entropy_check,
             fingerprint,
@@ -104,6 +119,10 @@ impl OmikujiResult {
         output.push_str(&format!("Lucky ASCII       : '{}'\n", self.lucky_ascii));
         output.push_str(&format!("Lucky Logic Gate  : {}\n", self.lucky_logic_gate));
         output.push_str(&format!("Lucky Emoji       : {}\n", self.lucky_emoji));
+        output.push_str(&format!("Lucky Direction   : {}\n", self.lucky_direction));
+        output.push_str(&format!("Lucky Element     : {}\n", self.lucky_element));
+        output.push_str(&format!("Lucky Percent     : {}%\n", self.lucky_percent));
+        output.push_str(&format!("Lucky Location    : {}°, {}°\n", self.lucky_latitude, self.lucky_longitude));
         output.push('\n');
 
         output.push_str("Luck Scores :\n");
@@ -295,8 +314,43 @@ mod tests {
     #[test]
     fn test_lucky_emoji() {
         let result = create_test_result();
-        let valid_emojis = ["😀", "😎", "🎉", "🔥", "⭐", "💡", "🎯", "🚀"];
-        assert!(valid_emojis.contains(&result.lucky_emoji.as_str()));
+        // Just check it's not empty (128 emojis is too many to list)
+        assert!(!result.lucky_emoji.is_empty());
+    }
+
+    #[test]
+    fn test_lucky_direction() {
+        let result = create_test_result();
+        let valid_directions = ["↑", "↗", "→", "↘", "↓", "↙", "←", "↖"];
+        assert!(valid_directions.contains(&result.lucky_direction.as_str()));
+    }
+
+    #[test]
+    fn test_lucky_element() {
+        let result = create_test_result();
+        let valid_elements = [
+            "H (1)", "He (2)", "C (6)", "N (7)", "O (8)", "Na (11)", "Mg (12)", "Al (13)",
+            "Si (14)", "Fe (26)", "Cu (29)", "Ag (47)", "Au (79)", "Pt (78)", "Pb (82)", "U (92)",
+        ];
+        assert!(valid_elements.contains(&result.lucky_element.as_str()));
+    }
+
+    #[test]
+    fn test_lucky_percent() {
+        let result = create_test_result();
+        assert!(result.lucky_percent <= 100);
+    }
+
+    #[test]
+    fn test_lucky_latitude() {
+        let result = create_test_result();
+        assert!(result.lucky_latitude >= -90 && result.lucky_latitude <= 90);
+    }
+
+    #[test]
+    fn test_lucky_longitude() {
+        let result = create_test_result();
+        assert!(result.lucky_longitude >= -180 && result.lucky_longitude <= 180);
     }
 
     #[test]

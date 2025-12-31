@@ -35,6 +35,10 @@ Lucky Power of 2  : 64
 Lucky ASCII       : 'K'
 Lucky Logic Gate  : XOR
 Lucky Emoji       : 🎉
+Lucky Direction   : ↗
+Lucky Element     : Au (79)
+Lucky Percent     : 73%
+Lucky Location    : 35°, 139°
 
 Luck Scores :
 WiFi Luck         :  95 (Excellent)
@@ -70,8 +74,13 @@ packet-beta
 62-64: "Logic Gate (3)"
 65-192: "Luck Scores (128)"
 193-204: "Entropy (12)"
-205-207: "Emoji (3)"
-208-255: "Reserved (48)"
+205-210: "Emoji (6)"
+211-213: "Direction (3)"
+214-217: "Element (4)"
+218-224: "Percent (7)"
+225-232: "Latitude (8)"
+233-241: "Longitude (9)"
+242-255: "Reserved (14)"
 ```
 
 | Field | Bits | Range |
@@ -87,8 +96,13 @@ packet-beta
 | Lucky Logic Gate | 62-64 (3bit) | AND,OR,XOR,NOT,NAND,NOR,XNOR,BUFFER |
 | Luck Scores | 65-192 (128bit) | 16 × 8bit scores |
 | Entropy | 193-204 (12bit) | checksum display |
-| Lucky Emoji | 205-207 (3bit) | 😀😎🎉🔥⭐💡🎯🚀 |
-| Reserved | 208-255 (48bit) | unused |
+| Lucky Emoji | 205-210 (6bit) | U+1F600-1F63F (64 smileys) |
+| Lucky Direction | 211-213 (3bit) | ↑↗→↘↓↙←↖ |
+| Lucky Element | 214-217 (4bit) | H(1),He(2),C(6)...U(92) |
+| Lucky Percent | 218-224 (7bit) | 0-100% (fair distribution) |
+| Lucky Latitude | 225-232 (8bit) | -90° to 90° |
+| Lucky Longitude | 233-241 (9bit) | -180° to 180° |
+| Reserved | 242-255 (14bit) | unused |
 
 ## Build from Source
 

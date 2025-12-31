@@ -15,7 +15,12 @@ expression: result
   "lucky_power_of_2": 16,
   "lucky_ascii": "?",
   "lucky_logic_gate": "NOT",
-  "lucky_emoji": "🔥",
+  "lucky_emoji": "😝",
+  "lucky_direction": "←",
+  "lucky_element": "Al (13)",
+  "lucky_percent": 5,
+  "lucky_latitude": -64,
+  "lucky_longitude": -57,
   "luck_scores": [
     {
       "luck_type": "Life",
