@@ -110,6 +110,21 @@ impl HashBits {
         self.get_bits(193, 12) as u16
     }
 
+    /// bit[205..207]: Lucky Emoji (3bit) -> 8 safe emojis
+    pub fn lucky_emoji(&self) -> &'static str {
+        let value = self.get_bits(205, 3) as u8;
+        match value {
+            0 => "😀",
+            1 => "😎",
+            2 => "🎉",
+            3 => "🔥",
+            4 => "⭐",
+            5 => "💡",
+            6 => "🎯",
+            _ => "🚀",
+        }
+    }
+
 }
 
 #[cfg(test)]
@@ -257,6 +272,17 @@ mod tests {
             let hash = HashBits::from_seed(2026, &seed);
             let gate = hash.lucky_logic_gate();
             assert!(valid_gates.contains(&gate), "Invalid gate: {}", gate);
+        }
+    }
+
+    #[test]
+    fn test_lucky_emoji_valid() {
+        let valid_emojis = ["😀", "😎", "🎉", "🔥", "⭐", "💡", "🎯", "🚀"];
+        for i in 0..100 {
+            let seed = format!("test-{}", i);
+            let hash = HashBits::from_seed(2026, &seed);
+            let emoji = hash.lucky_emoji();
+            assert!(valid_emojis.contains(&emoji), "Invalid emoji: {}", emoji);
         }
     }
 

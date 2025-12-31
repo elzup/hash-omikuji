@@ -25,6 +25,7 @@ pub struct OmikujiResult {
     pub lucky_power_of_2: u8,
     pub lucky_ascii: char,
     pub lucky_logic_gate: String,
+    pub lucky_emoji: String,
     pub luck_scores: Vec<LuckScore>,
     pub entropy_check: String,
     pub fingerprint: String,
@@ -41,6 +42,7 @@ impl OmikujiResult {
         let lucky_power_of_2 = hash.lucky_power_of_2();
         let lucky_ascii = hash.lucky_ascii();
         let lucky_logic_gate = hash.lucky_logic_gate().to_string();
+        let lucky_emoji = hash.lucky_emoji().to_string();
         let scores = hash.luck_scores();
         let entropy = hash.entropy_check();
 
@@ -76,6 +78,7 @@ impl OmikujiResult {
             lucky_power_of_2,
             lucky_ascii,
             lucky_logic_gate,
+            lucky_emoji,
             luck_scores,
             entropy_check,
             fingerprint,
@@ -100,6 +103,7 @@ impl OmikujiResult {
         output.push_str(&format!("Lucky Power of 2  : {}\n", self.lucky_power_of_2));
         output.push_str(&format!("Lucky ASCII       : '{}'\n", self.lucky_ascii));
         output.push_str(&format!("Lucky Logic Gate  : {}\n", self.lucky_logic_gate));
+        output.push_str(&format!("Lucky Emoji       : {}\n", self.lucky_emoji));
         output.push('\n');
 
         output.push_str("Luck Scores :\n");
@@ -286,6 +290,13 @@ mod tests {
         let result = create_test_result();
         let valid_gates = ["AND", "OR", "XOR", "NOT", "NAND", "NOR", "XNOR", "BUFFER"];
         assert!(valid_gates.contains(&result.lucky_logic_gate.as_str()));
+    }
+
+    #[test]
+    fn test_lucky_emoji() {
+        let result = create_test_result();
+        let valid_emojis = ["😀", "😎", "🎉", "🔥", "⭐", "💡", "🎯", "🚀"];
+        assert!(valid_emojis.contains(&result.lucky_emoji.as_str()));
     }
 
     #[test]

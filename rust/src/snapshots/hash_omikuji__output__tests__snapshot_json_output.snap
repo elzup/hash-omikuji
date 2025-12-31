@@ -15,6 +15,7 @@ expression: result
   "lucky_power_of_2": 16,
   "lucky_ascii": "?",
   "lucky_logic_gate": "NOT",
+  "lucky_emoji": "🔥",
   "luck_scores": [
     {
       "luck_type": "Life",

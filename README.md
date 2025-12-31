@@ -34,6 +34,7 @@ Lucky Time        : 02:40
 Lucky Power of 2  : 64
 Lucky ASCII       : 'K'
 Lucky Logic Gate  : XOR
+Lucky Emoji       : 🎉
 
 Luck Scores :
 WiFi Luck         :  95 (Excellent)
@@ -49,7 +50,7 @@ Uses SHA-256 hash of `{year}-{seed}-{salt}` to deterministically generate:
 
 - Lucky numbers, hex, color, bits
 - Lucky day and time
-- Lucky power of 2, ASCII, logic gate
+- Lucky power of 2, ASCII, logic gate, emoji
 - 16 luck categories with scores
 
 Same input always produces the same output.
@@ -69,7 +70,8 @@ packet-beta
 62-64: "Logic Gate (3)"
 65-192: "Luck Scores (128)"
 193-204: "Entropy (12)"
-205-255: "Reserved (51)"
+205-207: "Emoji (3)"
+208-255: "Reserved (48)"
 ```
 
 | Field | Bits | Range |
@@ -85,7 +87,8 @@ packet-beta
 | Lucky Logic Gate | 62-64 (3bit) | AND,OR,XOR,NOT,NAND,NOR,XNOR,BUFFER |
 | Luck Scores | 65-192 (128bit) | 16 × 8bit scores |
 | Entropy | 193-204 (12bit) | checksum display |
-| Reserved | 205-255 (51bit) | unused |
+| Lucky Emoji | 205-207 (3bit) | 😀😎🎉🔥⭐💡🎯🚀 |
+| Reserved | 208-255 (48bit) | unused |
 
 ## Build from Source
 
