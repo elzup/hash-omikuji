@@ -27,9 +27,9 @@
     "node": ">=14.0.0"
   },
   "optionalDependencies": {
-    "@hash-omikuji/darwin-arm64": "0.1.0",
-    "@hash-omikuji/darwin-x64": "0.1.0",
-    "@hash-omikuji/linux-x64": "0.1.0",
-    "@hash-omikuji/win32-x64": "0.1.0"
+    "@elzup/hash-omikuji-darwin-arm64": "0.1.0",
+    "@elzup/hash-omikuji-darwin-x64": "0.1.0",
+    "@elzup/hash-omikuji-linux-x64": "0.1.0",
+    "@elzup/hash-omikuji-win32-x64": "0.1.0"
   }
 }

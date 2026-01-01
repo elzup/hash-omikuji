@@ -78,7 +78,7 @@ jobs:
           const main = JSON.parse(fs.readFileSync('package.json', 'utf8'));
           main.version = '$VERSION';
           for (const p of platforms) {
-            main.optionalDependencies[\`@hash-omikuji/\${p}\`] = '$VERSION';
+            main.optionalDependencies[\`@elzup/hash-omikuji-\${p}\`] = '$VERSION';
           }
           fs.writeFileSync('package.json', JSON.stringify(main, null, 2) + '\n');
 

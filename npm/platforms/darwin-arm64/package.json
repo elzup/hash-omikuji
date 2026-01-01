@@ -1,5 +1,5 @@
 {
-  "name": "@hash-omikuji/darwin-arm64",
+  "name": "@elzup/hash-omikuji-darwin-arm64",
   "version": "0.1.0",
   "description": "Darwin ARM64 binary for hash-omikuji",
   "os": ["darwin"],

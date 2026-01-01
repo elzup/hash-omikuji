@@ -5,10 +5,10 @@ const path = require('path');
 const os = require('os');
 
 const PLATFORMS = {
-  'darwin-arm64': '@hash-omikuji/darwin-arm64',
-  'darwin-x64': '@hash-omikuji/darwin-x64',
-  'linux-x64': '@hash-omikuji/linux-x64',
-  'win32-x64': '@hash-omikuji/win32-x64',
+  'darwin-arm64': '@elzup/hash-omikuji-darwin-arm64',
+  'darwin-x64': '@elzup/hash-omikuji-darwin-x64',
+  'linux-x64': '@elzup/hash-omikuji-linux-x64',
+  'win32-x64': '@elzup/hash-omikuji-win32-x64',
 };
 
 function getBinaryPath() {

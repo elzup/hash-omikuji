@@ -1,5 +1,5 @@
 {
-  "name": "@hash-omikuji/win32-x64",
+  "name": "@elzup/hash-omikuji-win32-x64",
   "version": "0.1.0",
   "description": "Windows x64 binary for hash-omikuji",
   "os": ["win32"],
