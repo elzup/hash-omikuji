@@ -9,6 +9,8 @@ chat.md
 node_modules/
 package-lock.json
 npm/bin/*/
+npm/platforms/*/hash-omikuji
+npm/platforms/*/hash-omikuji.exe
 
 # OS
 .DS_Store
