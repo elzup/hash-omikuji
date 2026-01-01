@@ -22,7 +22,7 @@ jobs:
             platform: darwin-x64
             binary: hash-omikuji
           - os: ubuntu-latest
-            target: x86_64-unknown-linux-gnu
+            target: x86_64-unknown-linux-musl
             platform: linux-x64
             binary: hash-omikuji
           - os: windows-latest
@@ -37,6 +37,10 @@ jobs:
         uses: dtolnay/rust-toolchain@stable
         with:
           targets: ${{ matrix.target }}
+
+      - name: Install musl-tools (Linux)
+        if: matrix.target == 'x86_64-unknown-linux-musl'
+        run: sudo apt-get update && sudo apt-get install -y musl-tools
 
       - name: Build
         run: cargo build --release --manifest-path rust/Cargo.toml --target ${{ matrix.target }}
